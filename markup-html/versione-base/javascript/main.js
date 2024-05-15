@@ -22,7 +22,11 @@ const images = [
     }
 ];
 
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
+
 let i = 0;
+let position = 0;
 
 images.forEach(element => {
     const items = document.querySelector('.items');
@@ -44,14 +48,31 @@ images.forEach(element => {
     i++;
 });
 
-const prev = document.querySelector('.prev');
-const next = document.querySelector('.next');
+const list = document.querySelectorAll('.item');
 
 prev.addEventListener('click', function(){
-
+    if(position > 0){
+        list[position].classList.remove('active');
+        position --;
+        list[position].classList.add('active');
+    }
+    else{
+        list[position].classList.remove('active');
+        position = list.length - 1;
+        list[position].classList.add('active');
+    }
 });
 
 next.addEventListener('click', function(){
-
+    if(position < list.length - 1){
+        list[position].classList.remove('active');
+        position ++;
+        list[position].classList.add('active');
+    }
+    else{
+        list[position].classList.remove('active');
+        position = 0;
+        list[position].classList.add('active');
+    }
 });
 
