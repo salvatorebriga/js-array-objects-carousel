@@ -27,19 +27,38 @@ const itemsContainer = document.querySelector('.items');
 const thumbsContainer = document.querySelector('.thumbs');
 const prev = document.querySelector('.prev');
 const next = document.querySelector('.next');
+const toggleAutoplayBtn = document.querySelector('.toggle-autoplay');
+const reverseAutoplayBtn = document.querySelector('.reverse-autoplay');
 
 let position = 0;
 let intervalId;
+let autoplayEnabled = true;
+let autoplayDirection = 1;
 
 function startAutoplay() {
     intervalId = setInterval(() => {
-        position = (position + 1) % images.length;
+        position = (position + autoplayDirection + images.length) % images.length;
         switchActive(position);
-    }, 3000);
+    }, 3000); // Adjust autoplay interval as needed
 }
 
 function stopAutoplay() {
     clearInterval(intervalId);
+}
+
+function toggleAutoplay() {
+    if (autoplayEnabled) {
+        stopAutoplay();
+        toggleAutoplayBtn.textContent = 'Start Autoplay';
+    } else {
+        startAutoplay();
+        toggleAutoplayBtn.textContent = 'Stop Autoplay';
+    }
+    autoplayEnabled = !autoplayEnabled;
+}
+
+function reverseAutoplay() {
+    autoplayDirection *= -1;
 }
 
 function switchActive(index){
@@ -96,14 +115,21 @@ prev.addEventListener('click', function(){
     stopAutoplay();
     position = (position - 1 + images.length) % images.length;
     switchActive(position);
-    startAutoplay();
+    if (autoplayEnabled) {
+        startAutoplay();
+    }
 });
 
 next.addEventListener('click', function(){
     stopAutoplay();
     position = (position + 1) % images.length;
     switchActive(position);
-    startAutoplay();
+    if (autoplayEnabled) {
+        startAutoplay();
+    }
 });
+
+toggleAutoplayBtn.addEventListener('click', toggleAutoplay);
+reverseAutoplayBtn.addEventListener('click', reverseAutoplay);
 
 startAutoplay();
