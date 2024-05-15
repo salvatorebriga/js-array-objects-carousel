@@ -56,30 +56,73 @@ images.forEach(element => {
     i++;
 });
 
+i = 0;
+
+images.forEach(element => {
+    const thumbs = document.querySelector('.thumbs');
+
+    const div = document.createElement('div');
+    div.classList.add('thumb');
+    div.setAttribute('id', `${i}`);
+    div.setAttribute('onclick', 'switchActive(this.id)');
+
+    if(i === 0){
+        div.classList.add('active');
+    }
+
+    thumbs.appendChild(div);
+
+    const img = document.createElement('img');
+    img.src = element.image;
+
+    div.appendChild(img);
+
+    i++;
+});
+
 const list = document.querySelectorAll('.item');
+
+const thumbList = document.querySelectorAll('.thumb');
+
+function switchActive(id){
+    thumbList[position].classList.remove('active');
+    list[position].classList.remove('active');
+    list[id].classList.add('active');
+    thumbList[id].classList.add('active');
+
+    position = id;
+}
 
 prev.addEventListener('click', function(){
     if(position > 0){
         list[position].classList.remove('active');
+        thumbList[position].classList.remove('active');
         position --;
         list[position].classList.add('active');
+        thumbList[position].classList.add('active');
     }
     else{
         list[position].classList.remove('active');
+        thumbList[position].classList.remove('active');
         position = list.length - 1;
         list[position].classList.add('active');
+        thumbList[position].classList.add('active');
     }
 });
 
 next.addEventListener('click', function(){
     if(position < list.length - 1){
         list[position].classList.remove('active');
+        thumbList[position].classList.remove('active');
         position ++;
         list[position].classList.add('active');
+        thumbList[position].classList.add('active');
     }
     else{
         list[position].classList.remove('active');
+        thumbList[position].classList.remove('active');
         position = 0;
         list[position].classList.add('active');
+        thumbList[position].classList.add('active');
     }
 });

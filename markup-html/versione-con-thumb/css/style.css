@@ -23,6 +23,22 @@
     position: relative;
 }
 
+.item > h2{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: rgb(255, 255, 255);
+    width: 45%;
+}
+
+.item > p{
+    position: absolute;
+    left: 10px;
+    bottom: 50px;
+    color: rgb(255, 255, 255);
+    width: 80%;
+}
+
 .item img {
     width: 100%;
     height: 100%;
