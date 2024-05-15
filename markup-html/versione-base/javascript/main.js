@@ -1,7 +1,7 @@
 const images = [
     {
         image: 'img/01.webp',
-        title: 'Marvel\'s Spiderman Miles Morale',
+        title: 'Marvel\'s Spiderman Miles Morales',
         text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
     }, {
         image: 'img/02.webp',
@@ -41,9 +41,17 @@ images.forEach(element => {
     items.appendChild(div);
 
     const img = document.createElement('img');
-    img.src = images[i].image;
+    img.src = element.image;
+
+    const h2 = document.createElement('h2');
+    h2.innerText = element.title;
+
+    const p = document.createElement('p');
+    p.innerText = element.text;
 
     div.appendChild(img);
+    div.appendChild(h2);
+    div.appendChild(p);
 
     i++;
 });
