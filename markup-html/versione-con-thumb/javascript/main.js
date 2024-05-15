@@ -10,7 +10,7 @@ const images = [
     }, {
         image: 'img/03.webp',
         title: 'Fortnite',
-        text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.",
+        text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100-player face-off that combines looting, crafting, shootouts and chaos.",
     }, {
         image: 'img/04.webp',
         title: 'Stray',
@@ -22,23 +22,43 @@ const images = [
     }
 ];
 
+const container = document.querySelector('.container');
+const itemsContainer = document.querySelector('.items');
+const thumbsContainer = document.querySelector('.thumbs');
 const prev = document.querySelector('.prev');
 const next = document.querySelector('.next');
 
-let i = 0;
 let position = 0;
+let intervalId;
 
-images.forEach(element => {
-    const items = document.querySelector('.items');
+function startAutoplay() {
+    intervalId = setInterval(() => {
+        position = (position + 1) % images.length;
+        switchActive(position);
+    }, 3000);
+}
 
+function stopAutoplay() {
+    clearInterval(intervalId);
+}
+
+function switchActive(index){
+    document.querySelector('.item.active').classList.remove('active');
+    document.querySelector('.thumb.active').classList.remove('active');
+    document.querySelectorAll('.item')[index].classList.add('active');
+    document.querySelectorAll('.thumb')[index].classList.add('active');
+
+    position = index;
+}
+
+images.forEach((element, index) => {
     const div = document.createElement('div');
     div.classList.add('item');
+    div.setAttribute('data-index', index);
 
-    if(i === 0){
+    if(index === 0){
         div.classList.add('active');
     }
-
-    items.appendChild(div);
 
     const img = document.createElement('img');
     img.src = element.image;
@@ -53,76 +73,37 @@ images.forEach(element => {
     div.appendChild(h2);
     div.appendChild(p);
 
-    i++;
-});
+    itemsContainer.appendChild(div);
 
-i = 0;
+    const div2 = document.createElement('div');
+    div2.classList.add('thumb');
+    div2.setAttribute('data-index', index);
+    div2.addEventListener('click', () => switchActive(index));
 
-images.forEach(element => {
-    const thumbs = document.querySelector('.thumbs');
-
-    const div = document.createElement('div');
-    div.classList.add('thumb');
-    div.setAttribute('id', `${i}`);
-    div.setAttribute('onclick', 'switchActive(this.id)');
-
-    if(i === 0){
-        div.classList.add('active');
+    if(index === 0){
+        div2.classList.add('active');
     }
 
-    thumbs.appendChild(div);
+    const thumbImg = document.createElement('img');
+    thumbImg.src = element.image;
 
-    const img = document.createElement('img');
-    img.src = element.image;
+    div2.appendChild(thumbImg);
 
-    div.appendChild(img);
-
-    i++;
+    thumbsContainer.appendChild(div2);
 });
-
-const list = document.querySelectorAll('.item');
-
-const thumbList = document.querySelectorAll('.thumb');
-
-function switchActive(id){
-    thumbList[position].classList.remove('active');
-    list[position].classList.remove('active');
-    list[id].classList.add('active');
-    thumbList[id].classList.add('active');
-
-    position = id;
-}
 
 prev.addEventListener('click', function(){
-    if(position > 0){
-        list[position].classList.remove('active');
-        thumbList[position].classList.remove('active');
-        position --;
-        list[position].classList.add('active');
-        thumbList[position].classList.add('active');
-    }
-    else{
-        list[position].classList.remove('active');
-        thumbList[position].classList.remove('active');
-        position = list.length - 1;
-        list[position].classList.add('active');
-        thumbList[position].classList.add('active');
-    }
+    stopAutoplay();
+    position = (position - 1 + images.length) % images.length;
+    switchActive(position);
+    startAutoplay();
 });
 
 next.addEventListener('click', function(){
-    if(position < list.length - 1){
-        list[position].classList.remove('active');
-        thumbList[position].classList.remove('active');
-        position ++;
-        list[position].classList.add('active');
-        thumbList[position].classList.add('active');
-    }
-    else{
-        list[position].classList.remove('active');
-        thumbList[position].classList.remove('active');
-        position = 0;
-        list[position].classList.add('active');
-        thumbList[position].classList.add('active');
-    }
+    stopAutoplay();
+    position = (position + 1) % images.length;
+    switchActive(position);
+    startAutoplay();
 });
+
+startAutoplay();
